@@ -32,6 +32,7 @@ export default function CharacterList({ characters, selectedCharacterId, onSelec
         >
           <span className="post-card-id">Character #{character.id}</span>
           <strong>{character.name}</strong>
+          <img src={`https://cdn.thesimpsonsapi.com/500${character.portrait_path}`}/>
           <p>{character.occupation.slice(0, 110)}...</p>
         </button>
       ))}
