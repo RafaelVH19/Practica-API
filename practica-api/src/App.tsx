@@ -1,35 +1,59 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useMemo, useState } from 'react';
+import SearchBar from './components/SearchBar';
+import CharacterList from './components/CharacterList';
+import { useCharacters } from './hooks/useCharacters';
+import type { Character } from './lib/api';
 
-function App() {
-  const [count, setCount] = useState(0)
+export default function App() {
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedCharacter, setSelectedCharacter] = useState<Character | null>(null);
+  const { filteredCharacters, characters, loading, error } = useCharacters(searchTerm);
+
+  const stats = useMemo(() => {
+    return {
+      totalCharacters: characters.length,
+      filteredCharacters: filteredCharacters.length,
+      selectedCharacterId: selectedCharacter?.id ?? 'Ninguno',
+    };
+  }, [characters.length, filteredCharacters.length, selectedCharacter]);
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
+    <main className="app-shell">
+      <header className="hero">
+        <p className="eyebrow">Practica React + TypeScript</p>
+        <h1>Explorador de publicaciones</h1>
         <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
+          Consume una API publica con <code>fetch</code>, usa <code>useEffect</code> para cargar datos,
+          filtra resultados con un formulario controlado y muestra comentarios de forma asincrona.
         </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+      </header>
 
-export default App
+      <section className="stats-grid">
+        <article className="stat-card">
+          <span>Total de posts</span>
+          <strong>{stats.totalCharacters}</strong>
+        </article>
+        <article className="stat-card">
+          <span>Posts filtrados</span>
+          <strong>{stats.filteredCharacters}</strong>
+        </article>
+        <article className="stat-card">
+          <span>Post seleccionado</span>
+          <strong>{stats.selectedCharacterId}</strong>
+        </article>
+      </section>
+
+      <SearchBar value={searchTerm} onChange={setSearchTerm} />
+
+      <section className="layout">
+        <CharacterList
+          characters={filteredCharacters}
+          selectedCharacterId={selectedCharacter?.id ?? null}
+          onSelectCharacter={setSelectedCharacter}
+          loading={loading}
+          error={error}
+        />
+      </section>
+    </main>
+  );
+}

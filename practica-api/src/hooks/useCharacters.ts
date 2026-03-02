@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useState } from 'react';
-import { fetchCharacters, type Characters } from '../lib/api';
+import { fetchCharacters, type Character } from '../lib/api';
 
-export function useCharacter(name: string) {
-  const [characters, setCharacters] = useState<Characters[]>([]);
+export function useCharacters(name: string) {
+  const [characters, setCharacters] = useState<Character[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
@@ -14,7 +14,7 @@ export function useCharacter(name: string) {
         setLoading(true);
         setError('');
         const data = await fetchCharacters();
-        if (active) setCharacters(data);
+        if (active) setCharacters(data.results);
       } catch (loadError) {
         if (active) {
           setError(loadError instanceof Error ? loadError.message : 'Error al cargar posts');
