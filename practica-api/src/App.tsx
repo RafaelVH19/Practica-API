@@ -1,6 +1,8 @@
 import { useMemo, useState } from 'react';
 import SearchBar from './components/SearchBar';
 import CharacterList from './components/CharacterList';
+import CharacterDetails from './components/CharacterDetails'
+import { useDetails } from './hooks/useDetails'
 import { useCharacters } from './hooks/useCharacters';
 import type { Character } from './lib/api';
 
@@ -8,6 +10,7 @@ export default function App() {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCharacter, setSelectedCharacter] = useState<Character | null>(null);
   const { filteredCharacters, characters, loading, error } = useCharacters(searchTerm);
+  const { details, loading: detailsLoading, error: detailsError } = useDetails(selectedCharacter?.id ?? null);
 
   const stats = useMemo(() => {
     return {
@@ -52,6 +55,12 @@ export default function App() {
           onSelectCharacter={setSelectedCharacter}
           loading={loading}
           error={error}
+        />
+        <CharacterDetails
+          character={selectedCharacter}
+          details={details}
+          detailsLoading={detailsLoading}
+          detailsError={detailsError}
         />
       </section>
     </main>
