@@ -22,45 +22,38 @@ export default function App() {
 
   return (
     <main className="app-shell">
-      <header className="hero">
-        <p className="eyebrow">Practica React + TypeScript</p>
-        <h1>Explorador de publicaciones</h1>
-        <p>
-          Consume una API publica con <code>fetch</code>, usa <code>useEffect</code> para cargar datos,
-          filtra resultados con un formulario controlado y muestra comentarios de forma asincrona.
-        </p>
-      </header>
-
-      <section className="stats-grid">
-        <article className="stat-card">
-          <span>Total de posts</span>
-          <strong>{stats.totalCharacters}</strong>
-        </article>
-        <article className="stat-card">
-          <span>Posts filtrados</span>
-          <strong>{stats.filteredCharacters}</strong>
-        </article>
-        <article className="stat-card">
-          <span>Post seleccionado</span>
-          <strong>{stats.selectedCharacterId}</strong>
-        </article>
+      <section className="text-white body-font bg-indigo-600">
+        <div className="container mx-auto flex px-5 py-20 items-center justify-center flex-col">
+          <div className="text-center lg:w-2/3 w-full">
+            <h1 className="title-font sm:text-5xl text-3xl mb-4 font-medium">Buscador de Personajes de Simpsons</h1>
+            <p className="mb-8 leading-relaxed">Practica React + TypeScript. Consume una API publica con <code>fetch</code>, usa <code>useEffect</code> para cargar datos,
+          filtra resultados con un formulario controlado y muestra comentarios de forma asincrona.</p>
+          </div>
+        </div>
       </section>
 
-      <SearchBar value={searchTerm} onChange={setSearchTerm} />
-
       <section className="layout">
+        <CharacterDetails
+          character={selectedCharacter}
+          details={details}
+          detailsLoading={detailsLoading}
+          detailsError={detailsError}
+        />
+
+      <section className="text-gray-600 body-font">
+        <div className="container mx-auto px-5 py-8">
+          <div className="mx-auto w-full max-w-2xl">
+            <SearchBar value={searchTerm} onChange={setSearchTerm} />
+          </div>
+        </div>
+      </section>
+
         <CharacterList
           characters={filteredCharacters}
           selectedCharacterId={selectedCharacter?.id ?? null}
           onSelectCharacter={setSelectedCharacter}
           loading={loading}
           error={error}
-        />
-        <CharacterDetails
-          character={selectedCharacter}
-          details={details}
-          detailsLoading={detailsLoading}
-          detailsError={detailsError}
         />
       </section>
     </main>
