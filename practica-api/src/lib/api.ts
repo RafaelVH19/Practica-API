@@ -1,4 +1,4 @@
-export type Character = {
+export type Characters = {
   id: number;
   age: number;
   birthdate: string;
@@ -20,7 +20,7 @@ async function handleResponse<T>(response: Response, defaultMessage: string): Pr
   return response.json() as Promise<T>;
 }
 
-export async function fetchPosts(id: number): Promise<Character[]> {
-  const response = await fetch(`${API_BASE_URL}/${id}`);
-  return handleResponse<Character[]>(response, 'No se pudieron cargar las publicaciones');
+export async function fetchCharacters(): Promise<Characters[]> {
+  const response = await fetch(`${API_BASE_URL}`);
+  return handleResponse<Characters[]>(response, 'No se pudieron cargar las publicaciones');
 }
