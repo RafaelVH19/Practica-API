@@ -1,4 +1,5 @@
 import type { Character } from '../lib/api';
+import Article from './article';
 
 type CharacterListProps = {
   characters: Character[];
@@ -22,19 +23,16 @@ export default function CharacterList({ characters, selectedCharacterId, onSelec
   }
 
   return (
-    <section className="panel post-list">
+    <section className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5">
       {characters.map((character) => (
-        <button
-          key={character.id}
-          type="button"
-          className={`post-card ${selectedCharacterId === character.id ? 'selected' : ''}`}
-          onClick={() => onSelectCharacter(character)}
-        >
-          <span className="post-card-id">Character #{character.id}</span>
-          <strong>{character.name}</strong>
-          <img src={`https://cdn.thesimpsonsapi.com/500${character.portrait_path}`}/>
-          <p>{character.occupation.slice(0, 110)}...</p>
-        </button>
+        <div className="text-center rounded-xl border p-4 transition hover:shadow-md hover:-translate-y-0.5 hover:outline hover:outline-2 hover:outline-indigo-600">
+          <Article 
+            key={character.id}
+            character={character}
+            selected={selectedCharacterId === character.id}
+            onSelect={onSelectCharacter}
+          />
+        </div>
       ))}
     </section>
   );
